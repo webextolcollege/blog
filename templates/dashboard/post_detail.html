@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Page content-->
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Post content-->
+            <article>
+                <!-- Post header-->
+                <header class="mb-4">
+                    <!-- Post title-->
+                    <h1 class="fw-bolder mb-1">{{single_post.title|safe}}</h1>
+                    <!-- Post meta content-->
+                    <div class="text-muted fst-italic mb-2">Posted on {{single_post.created_at}} by {{single_post.auther}}</div>
+                    <!-- Post category-->
+                    <a class="badge bg-warning text-decoration-none text-light" href="#!">{{single_post.category}}</a>
+                </header>
+                <!-- Preview image figure-->
+                <figure class="mb-4"><img class="img-fluid rounded" src="{{single_post.featured_image.url}}" alt="..." /></figure>
+                <!-- Post content-->
+                <section class="mb-5">
+                    <p class="fs-5 mb-4">{{single_post.short_description|safe}}</p>
+                    <p class="fs-5 mb-4">{{single_post.blog_body|safe}}</p>
+
+                    <!-- download pdf -->
+                    {% if single_post.pdf_file %}
+                    <a href="{{single_post.pdf_file.url}}" class="btn btn-primary" download="{{single_post.pdf_file.url}}">Download PDF</a>
+                    
+                    {% else %}
+                    <h3 class="text-center text-danger">No pdf file found</h3>
+                    {% endif %}
+
+
+                    <!-- comments -->
+                    <h4> Comments ({{ comment_count }}) </h4>
+                    {% if comments %}
+                        {% for comment in comments %}
+                            <div class="card mt-1">
+                                <div class="card-body">
+                                    <p class="card-text mb-0">{{comment}}</p>
+                                    <span>
+                                        <small> {{comment.user}}</small>
+                                        <small>| {{comment.created_at | timesince}} ago</small>
+                                    </span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                    No comments yet
+                    {% endif %}
+                    <br>
+                    <div class="form-group">
+                        {% if user.is_authenticated %}
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <textarea name="comment"  class="form-control" placeholder="Write your comment here"></textarea>
+                                <input type="submit" value="submit" class="btn btn-primary mt-2">
+                            </div>
+                        </form>
+                        {% else %}
+                        <p>Please <span><a href="{% url 'login' %}">Login</a></span> to write a comment</p>
+                    </div>
+                    {% endif %}
+                </section>
+            </article>
+        </div>
+
+        <!-- Categories widget-->
+        <div class="col-md-3">
+            <!-- Categories widget -->
+            <div class="card mb-3 p-2">
+                <h4 class="font-italic">Categories</h4>
+                <ol class="list-unstyled">
+                    {% for cat in categories %}
+                    <li><a href="{% url 'posts_by_category' cat.id %}">{{cat.category_name}}</a></li>
+                    {% endfor %}
+                </ol>
+            </div>
+            <!-- Side widget -->
+            {% if social_links %}
+            <div class="card mb-3 p-2">
+                <h4 class="font-italic">Follow Us</h4>
+                <ol class="list-unstyled">
+                    {% for i in social_links %}
+                    <li><a href="{{i.link}}" target="_blank">{{i.platform}}</a></li>
+                    {% endfor %}
+                </ol>
+            </div>
+            {% endif %}
+        </div> 
+    </div>
+</div>
+
+{% endblock %}
