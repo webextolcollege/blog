@@ -42,7 +42,8 @@ urlpatterns = [
     # Tinymce
     path('tinymce/', include('tinymce.urls')),
     
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] 
+
 # pdf_file download
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
