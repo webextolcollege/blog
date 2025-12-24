@@ -17,36 +17,42 @@
   </head>
 <body>
     <div class="container">
-      <header class="blog-header py-3">
+      <header style="background-color: #90b9ff;" class="p-3 mb-3 rounded class="blog-header py-3">
         <div class="row flex-nowrap justify-content-between align-items-center">
           <div class="col-4 pt-1">
-            <a class="blog-header-logo text-Blue font-size-h2" href="/">Educational Blog</a>
+            <a class="blog-header-logo text-dark font-size-h2" href="/">Educational Blog</a>
           </div>
           <div class="col-4">
-            <form action=" {% url 'search'%}" method="GET">
+            <form action="{% url 'search' %}" method="GET">
               <div class="input-group">
-                <input class="form-control" type="text" value="keywords" name="keyword" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-                <button type = "submit" class="btn btn-warning" id="button-search" type="button">Go!</button>
-            </div>
+                <input class="form-control" type="text" name="keyword"
+                  placeholder="Enter search term..."
+                  aria-label="Enter search term..."
+                />
+                <button class="btn btn-warning" type="submit" id="button-search">
+                  Go!
+                </button>
+              </div>
             </form>
           </div>
+
           <div class="col-4 d-flex justify-content-end align-items-center">
             {% if not user.is_authenticated %}
             <a class="btn btn-sm btn-warning" href="{% url 'login' %}">Login</a> 
             <a class="btn btn-sm btn-outline-secondary" href="{% url 'register' %}">Register</a>
             {% else %}
-            <span><a href="{% url 'dashboard' %}">Dashboard</a> </span>
+            <span><a class="text-dark" href="{% url 'dashboard' %}">Dashboard</a> </span>
             &nbsp; &nbsp;
-            <span><a href="{% url 'logout' %}">Logout</a></span>
+            <span><a class="text-danger" href="{% url 'logout' %}">Logout</a></span>
             {% endif %}
           </div>
         </div>
       </header>
 
-      <div class="nav-scroller py-1 mb-2">
+      <div style="background-color: #cecece;" class="p-3 mb-3 rounded class="nav-scroller py-1 mb-2">
         <nav class="nav d-flex justify-content-between">
           {% for cat in categories %}
-          <a class= text-font-weight-bold class="p-2 text-muted" href="{% url 'posts_by_category' cat.id %}">{{cat.category_name}}</a>
+          <a class="p-2 text-muted" href="{% url 'posts_by_category' cat.id %}" style="color: #635C5A;">{{cat.category_name}}</a>
           {% endfor %}
         </nav>
       </div>
@@ -58,8 +64,8 @@
 
 <!-- Footer part -->
 
-<footer class="blog-footer">
-    <p class="text-center"><b>This Educational News Blog</b> built by <b>WebBroTech</b> a Brand of <b>WebBro Technologies Pvt Ltd </b><a href="https://www.youtube.com/@WebBroTech">www.WebBroTech.com</a></p>
+<footer style="background-color: #77a4ce;" class="p-3 mb-3 rounded" class="blog-footer">
+    <p class="text-center"><b>This Educational News Blog</b> built by <b>WebBroTech</b> a Brand of <b>WebBro Technologies</b><a class="text-danger" href="https://www.linkedin.com/in/webbrotech" target="_blank">  www.LinkedIn.com</a></p>
   </footer>
   </body>
   </html>

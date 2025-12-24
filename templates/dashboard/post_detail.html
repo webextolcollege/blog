@@ -26,10 +26,10 @@
 
                     <!-- download pdf -->
                     {% if single_post.pdf_file %}
-                    <a href="{{single_post.pdf_file.url}}" class="btn btn-primary" download="{{single_post.pdf_file.url}}">Download PDF</a>
+                    <a href="{{single_post.pdf_file.url}}" class="btn btn-primary" download="{{single_post.pdf_file.url}}">Download File</a>
                     
                     {% else %}
-                    <h3 class="text-center text-danger">No pdf file found</h3>
+                    <h3 class="text-center text-danger">No Download file found</h3>
                     {% endif %}
 
 
@@ -71,7 +71,7 @@
         <!-- Categories widget-->
         <div class="col-md-3">
             <!-- Categories widget -->
-            <div class="card mb-3 p-2">
+            <div class="card mb-3 p-2 bg-light rounded">
                 <h4 class="font-italic">Categories</h4>
                 <ol class="list-unstyled">
                     {% for cat in categories %}
@@ -81,7 +81,7 @@
             </div>
             <!-- Side widget -->
             {% if social_links %}
-            <div class="card mb-3 p-2">
+            <div style="background-color: #cecece;" class="p-3 mb-3 rounded class="card mb-3 p-2">
                 <h4 class="font-italic">Follow Us</h4>
                 <ol class="list-unstyled">
                     {% for i in social_links %}
