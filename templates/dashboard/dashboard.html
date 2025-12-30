@@ -1,34 +1,60 @@
-{% extends 'base.html' %} {% block content %}
-<div class="row">
-  <!-- Left sidebar -->
-  <!-- load the sidebar here -->
-  {% include 'dashboard/sidebar.html' %}
+{% extends 'base.html' %}
 
-  <!-- Right side content --> 
-  <div class="col-md-9">
-    <span>Logged in as  <b>{{user}}</b></span>
-    <div class="row">
-      <div class="col">
-        <div class="card border-defalut mb-3">
-          <div class="card-header text-center text-uppercase font-weight-bold">
-            All Categories
+{% block content %}
+
+<main class="container mt-4" role="main">
+  <div class="row">
+
+    <!-- Sidebar -->
+    <aside class="col-md-3 mb-4" aria-label="Dashboard Sidebar">
+      {% include 'dashboard/sidebar.html' %}
+    </aside>
+
+    <!-- Dashboard Content -->
+    <section class="col-md-9">
+
+      <header class="text-center mb-4">
+        <h1 class="h4 mb-1">Dashboard Overview</h1>
+        <p class="mb-0">
+          Logged in as <strong>{{ user }}</strong>
+        </p>
+      </header>
+
+      <!-- Dashboard Statistics -->
+      <section class="row justify-content-center text-center" aria-label="Dashboard Statistics">
+
+        <!-- Categories Card -->
+        <article class="col-sm-6 col-lg-4 mb-3">
+          <div class="card border-primary h-100">
+            <div class="card-header bg-primary text-white text-uppercase fw-semibold">
+              <h2 class="h6 mb-0">All Categories</h2>
+            </div>
+            <div class="card-body d-flex align-items-center justify-content-center">
+              <p class="card-text h4 mb-0" itemprop="numberOfItems">
+                {{ category_count }}
+              </p>
+            </div>
           </div>
-          <div class="card-body text-dark">
-            <h5 class="card-title text-center">{{category_count}}</h5>
+        </article>
+
+        <!-- Posts Card -->
+        <article class="col-sm-6 col-lg-4 mb-3">
+          <div class="card border-success h-100">
+            <div class="card-header bg-success text-white text-uppercase fw-semibold">
+              <h2 class="h6 mb-0">All Posts</h2>
+            </div>
+            <div class="card-body d-flex align-items-center justify-content-center">
+              <p class="card-text h4 mb-0" itemprop="numberOfItems">
+                {{ blogs_count }}
+              </p>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card border-defalut mb-3">
-          <div class="card-header text-center text-uppercase font-weight-bold">
-            All Posts
-          </div>
-          <div class="card-body text-dark">
-            <h5 class="card-title text-center">{{blogs_count}}</h5>
-          </div>
-        </div>
-      </div>
-    </div>
+        </article>
+
+      </section>
+
+    </section>
   </div>
-</div>
+</main>
+
 {% endblock %}

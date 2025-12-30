@@ -1,71 +1,173 @@
-
-
-<!-- Header Part -->
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Django Blogs</title>
-    <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
-    <link href="{% static 'css/blog.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  </head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Govt. Employees Updates</title>
+
+  <!-- CSS -->
+  <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+  <link href="{% static 'css/blog.css' %}" rel="stylesheet">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
 <body>
-    <div class="container">
-      <header style="background-color: #90b9ff;" class="p-3 mb-3 rounded class="blog-header py-3">
-        <div class="row flex-nowrap justify-content-between align-items-center">
-          <div class="col-4 pt-1">
-            <a class="blog-header-logo text-dark font-size-h2" href="/">Educational Blog</a>
-          </div>
-          <div class="col-4">
-            <form action="{% url 'search' %}" method="GET">
-              <div class="input-group">
-                <input class="form-control" type="text" name="keyword"
-                  placeholder="Enter search term..."
-                  aria-label="Enter search term..."
-                />
-                <button class="btn btn-warning" type="submit" id="button-search">
-                  Go!
-                </button>
-              </div>
-            </form>
-          </div>
+<div class="container">
 
-          <div class="col-4 d-flex justify-content-end align-items-center">
-            {% if not user.is_authenticated %}
-            <a class="btn btn-sm btn-warning" href="{% url 'login' %}">Login</a> 
-            <a class="btn btn-sm btn-outline-secondary" href="{% url 'register' %}">Register</a>
-            {% else %}
-            <span><a class="text-dark" href="{% url 'dashboard' %}">Dashboard</a> </span>
-            &nbsp; &nbsp;
-            <span><a class="text-danger" href="{% url 'logout' %}">Logout</a></span>
-            {% endif %}
-          </div>
-        </div>
-      </header>
+  <!-- ================= Header ================= -->
+  <header class="p-3 mb-3 rounded blog-header"
+          style="background-color:#90b9ff;">
 
-      <div style="background-color: #cecece;" class="p-3 mb-3 rounded class="nav-scroller py-1 mb-2">
-        <nav class="nav d-flex justify-content-between">
-          {% for cat in categories %}
-          <a class="p-2 text-muted" href="{% url 'posts_by_category' cat.id %}" style="color: #635C5A;">{{cat.category_name}}</a>
-          {% endfor %}
-        </nav>
+    <div class="row align-items-center">
+
+      <!-- Logo -->
+      <div class="col-md-4">
+        <a href="/"
+          style="color:#0f2a44;
+                  font-weight:700;
+                  font-size:1.6rem;
+                  text-decoration:none;">
+          Govt. Employees Updates
+        </a>
       </div>
 
-<!-- Main Content Part -->
-{% block content %}
+      <!-- Search -->
+      <div class="col-md-4">
+        <form action="{% url 'search' %}" method="GET">
+          <div class="input-group">
+            <input class="form-control"
+                  type="text"
+                  name="keyword"
+                  placeholder="Enter search term..."
+                  aria-label="Enter search term"
+                  style="font-size:0.95rem;">
+            <div class="input-group-append">
+              <button class="btn btn-warning"
+                      type="submit"
+                      style="font-size:0.9rem; font-weight:600;">
+                Go!
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
 
-{% endblock %}
+      <!-- Auth Section -->
+      <div class="col-md-4 d-flex justify-content-end align-items-center">
 
-<!-- Footer part -->
+        {% if not user.is_authenticated %}
+          <a href="{% url 'login' %}"
+            class="btn btn-sm btn-warning mr-2"
+            style="font-size:0.9rem; font-weight:600;">
+            Login
+          </a>
 
-<footer style="background-color: #77a4ce;" class="p-3 mb-3 rounded" class="blog-footer">
-    <p class="text-center"><b>This Educational News Blog</b> built by <b>WebBroTech</b> a Brand of <b>WebBro Technologies</b><a class="text-danger" href="https://www.linkedin.com/in/webbrotech" target="_blank">  www.LinkedIn.com</a></p>
-  </footer>
-  </body>
-  </html>
+          <a href="{% url 'register' %}"
+            class="btn btn-sm btn-outline-dark"
+            style="font-size:0.9rem; font-weight:500;">
+            Register
+          </a>
+        {% else %}
+          <a href="{% url 'dashboard' %}"
+            class="mr-3"
+            style="color:#0f2a44;
+                    font-size:0.95rem;
+                    font-weight:600;
+                    text-decoration:none;">
+            Dashboard
+          </a>
+
+          <a href="{% url 'logout' %}"
+            style="color:#7b1e1e;
+                    font-size:0.95rem;
+                    font-weight:600;
+                    text-decoration:none;">
+            Logout
+          </a>
+        {% endif %}
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= Category Navigation ================= -->
+  <div class="p-3 mb-3 rounded nav-scroller"
+      style="background-color:#cecece;">
+
+    <nav class="nav d-flex justify-content-between flex-wrap">
+      {% for cat in categories %}
+        <a href="{% url 'posts_by_category' cat.id %}"
+          class="p-2 nav-link"
+          style="color:#2f2f2f;
+                  font-weight:500;
+                  font-size:0.95rem;
+                  text-decoration:none;">
+          {{ cat.category_name }}
+        </a>
+      {% endfor %}
+    </nav>
+  </div>
+
+  <!-- ================= Main Content ================= -->
+  {% block content %}
+  {% endblock %}
+
+  <!-- Footer -->
+<!-- Footer -->
+<footer class="p-4 mt-4 rounded blog-footer" style="background-color:#e5e5e5; border-top: 1px solid #5f8fb6;">
+  <div class="container">
+
+    <!-- Flex Grid: Horizontal on Desktop, Stacked on Mobile -->
+    <div class="d-flex flex-column flex-md-row justify-content-around text-center text-md-left">
+
+      <!-- Editorial / About Us -->
+      <div class="mb-4 mb-md-0" style="flex:1; padding: 0 15px;">
+        <h5 style="color:#0f2a44; font-weight:600;">Editorial Policy</h5>
+        <p style="color:#1f3b57; font-size:0.95rem;">
+          News is curated and verified from reliable and authentic educational sources.
+        </p>
+        <h5 style="color:#0f2a44; font-weight:600;">References Policy</h5>
+        <p style="color:#1f3b57; font-size:0.95rem;">
+          We cite official announcements, boards, universities, and government sources.
+        </p>
+      </div> 
+
+      <!-- Contact / Email -->
+      <div class="mb-4 mb-md-0" style="flex:1; padding: 0 15px;">
+        <h5 style="color:#0f2a44; font-weight:600;">Contact</h5>
+        <ul class="list-unstyled" style="color:#1f3b57; font-size:0.95rem;">
+          <li><strong>Phone:</strong> +92-3006198982</li>
+          <li><strong>Location:</strong> Sialkot, Punjab, Pakistan</li>
+        </ul>
+        <h5 style="color:#0f2a44; font-weight:600;">Email</h5>
+        <p style="font-size:0.95rem;">
+          <a href="mailto:info@webbrotech.com" style="color:#7b1e1e; text-decoration:none; font-weight:500;">
+            abdulmunafmail@gmail.com
+          </a>
+        </p>
+      </div>
+
+    </div>
+
+    <hr style="border-color:#5f8fb6;">
+
+    <!-- Footer Bottom -->
+    <p class="text-center mb-0" style="color:#113252; font-size:0.9rem;">
+      <strong>This Educational News Blog</strong> |
+      Powered by <strong>WebBro Tech</strong> |
+      A Brand of <strong>WebBro Technologies</strong>
+    </p>
+
+  </div>
+</footer>
+
+
+</div>
+</body>
+</html>

@@ -1,27 +1,61 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
 
-<h3 class="text-warning" style="letter-spacing:2px;">Search-Term-{{keyword}}</h3>
-<div class="row mb-2">
-  {% if blogs %}
-  {% for i in blogs %}
-  <div class="col-md-6">
-      <div class="card border-0" >
-      <div class="card-body">
-        <h3><a href="{% url 'blogs' i.slug %}" class="text-dark">{{i.title}}</a></h3>
-        <small class="mb-1 text-muted">{{i.created_at | timesince}} ago | {{ i.author }}</small>
-        <p>{{ i.short_description|striptags|truncatewords:25 }}</p>
-        <p>{{ i.blog_body|striptags|truncatewords:25 }}</p>
-        <!-- <p class="card-text">{{i.short_description | truncatewords:25 }}</p> -->
+<main class="container my-4" role="main">
+
+  <!-- Search heading -->
+  <header class="mb-4" aria-labelledby="search-results-title">
+    <h1 id="search-results-title" class="text-warning" style="letter-spacing:2px;">
+      Search results for: <span class="text-dark">{{ keyword }}</span>
+    </h1>
+  </header>
+
+  <section class="row" aria-label="Search Results">
+    
+    {% if blogs %}
+      {% for i in blogs %}
+      <article class="col-md-6 mb-4" itemscope itemtype="https://schema.org/BlogPosting" aria-labelledby="post-title-{{ i.id }}">
+        
+        <div class="card border-0 h-100">
+          <div class="card-body">
+
+            <!-- Blog title -->
+            <h2 id="post-title-{{ i.id }}" class="h5" itemprop="headline">
+              <a href="{% url 'blogs' i.slug %}" class="text-dark" itemprop="url" title="{{ i.title }}">
+                {{ i.title }}
+              </a>
+            </h2>
+
+            <!-- Meta info -->
+            <p class="small text-muted">
+              <time datetime="{{ i.created_at|date:'c' }}" itemprop="datePublished">
+                {{ i.created_at|timesince }} ago
+              </time>
+              | <span itemprop="author">{{ i.author }}</span>
+            </p>
+
+            <!-- Short description -->
+            <p itemprop="description">
+              {{ i.short_description|striptags|truncatewords:25 }}
+            </p>
+
+          </div>
+        </div>
+
+      </article>
+      {% endfor %}
+
+    {% else %}
+      <div class="col-12">
+        <p class="text-muted" role="alert">
+          No posts found for your search.
+        </p>
       </div>
-    </div>
-  </div>
-  {% endfor %}
-  {% else %}
-  <p>No Post Found</p>
-  {% endif %}
-</div>
+    {% endif %}
+
+  </section>
+
+</main>
 
 {% endblock %}

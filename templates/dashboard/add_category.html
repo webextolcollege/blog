@@ -1,31 +1,54 @@
 {% extends 'base.html' %}
-
-
-
-{% block content %}
 {% load crispy_forms_tags %}
 
-<div class="row">
-    <!-- Left sidebar -->
-    <!-- load the sidebar here -->
-    {% include 'dashboard/sidebar.html' %}
+{% block content %}
 
-    <!-- Right side content --> 
-    <div class="col-md-9">
+<main class="container-fluid mt-4" role="main">
+  <div class="row">
+
+    <!-- Sidebar -->
+    <aside class="col-md-3" aria-label="Dashboard Sidebar">
+      {% include 'dashboard/sidebar.html' %}
+    </aside>
+
+    <!-- Main Content -->
+    <section class="col-md-9">
+      
       {% if perms.blogs.add_category %}
-      <h3>Add New Category</h3>
-      <form action= "{% url 'add_category'%}" method = "POST" style="width: 500px;">
-        {% csrf_token %}
-        {{form | crispy}}
-        <button type="submit" class="btn btn-warning"> submit</button>
+        <header class="mb-4">
+          <h1 class="h3">Add New Blog Category</h1>
+        </header>
 
-      </form>
-      <br>
+        <form 
+          action="{% url 'add_category' %}" 
+          method="POST" 
+          class="col-lg-6 col-md-8 p-0"
+          aria-label="Add Category Form"
+        >
+          {% csrf_token %}
+          
+          {{ form|crispy }}
+
+          <button 
+            type="submit" 
+            class="btn btn-warning mt-2"
+            aria-label="Submit Category"
+          >
+            Submit
+          </button>
+        </form>
+
       {% else %}
-      <h5 class="text-center text-danger"> You do not have permission to add category</h5>
+        <div class="alert alert-danger text-center" role="alert">
+          <h2 class="h5 mb-0">
+            You do not have permission to add a category
+          </h2>
+        </div>
       {% endif %}
-    
-    </div>
+
+    </section>
+
   </div>
+</main>
 
 {% endblock %}

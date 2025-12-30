@@ -1,27 +1,46 @@
-
-
 {% extends 'base.html' %}
 
-{% block content %} 
-  <!-- featured posts -->
-  <h3 class="text-uppercase text-warning letter-spacing = 2px">Category-{{category}}</h3>
-  <div class="row mb-2">
-    {% if posts %}
-    {% for post in posts %}
-    <div class="col-md-6">
-        <div class="card border-0" >
-        <div class="card-body">
-          <h3><a href="{% url 'blogs' post.slug %}" class="text-dark">{{post.title}}</a></h3>
-          <small class="mb-1 text-muted">{{post.created_at | timesince}} ago | {{post.auther}}</small>
-          <p class="card-text">{{post.short_description | truncatewords:25|safe }}</p>
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-    {% else %}
-    <p>No Post Found</p>
-    {% endif %}
-  </div>
+{% block content %}
 
+<main class="container my-4" role="main">
+  
+  <!-- Category Header -->
+  <header class="mb-4" aria-labelledby="category-title">
+    <h1 id="category-title" class="text-uppercase text-warning" style="letter-spacing: 2px;">
+      Category: {{ category }}
+    </h1>
+  </header>
+
+  <!-- Posts Grid -->
+  <section class="row mb-2" aria-labelledby="posts-list">
+    {% if posts %}
+      {% for post in posts %}
+      <article class="col-md-6 mb-4" aria-labelledby="post-title-{{ post.id }}">
+        <div class="card border-0 h-100">
+          <div class="card-body">
+            <h2 id="post-title-{{ post.id }}" class="h5">
+              <a href="{% url 'blogs' post.slug %}" class="text-dark">
+                {{ post.title }}
+              </a>
+            </h2>
+            <p class="text-muted mb-2">
+              <time datetime="{{ post.created_at|date:'c' }}">
+                {{ post.created_at|timesince }} ago
+              </time> 
+              | {{ post.auther }}
+            </p>
+            <p class="card-text">
+              {{ post.short_description|truncatewords:25|safe }}
+            </p>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    {% else %}
+      <p role="alert">No posts found in this category.</p>
+    {% endif %}
+  </section>
+
+</main>
 
 {% endblock %}

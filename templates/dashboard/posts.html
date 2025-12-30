@@ -1,56 +1,78 @@
-{% extends 'base.html'%}
-
+{% extends 'base.html' %}
 
 {% block content %}
-<div class="row">
-    <!-- Left sidebar -->
-    <!-- load the sidebar here -->
-    {% include 'dashboard/sidebar.html' %}
+<div class="container mt-4">
+    <div class="row">
 
-    <!-- Right side content --> 
-    <div class="col-md-9">
-      <h3>All Posts</h3>
-      
-      <a href="{% url 'add_post' %}" class="btn btn-dark text-light float-right mb-2"> Add New </a>
-    
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th >Title</th>
-            <th>Category</th>
-            <th>Auther</th>
-            <th>Featured</th>
-            <th>Status</th> 
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% for post in posts %}
-          <tr>
-            <td>{{ forloop.counter }}</td>
-            <td><a href="{% url 'post_detail' post.slug %}" class="text-dark">{{ post.title }} </a></td>
-            <td>{{ post.category }}</td>
-            <td>{{ post.auther }}</td>
-            <td>{{ post.status }}</td>
-            <td>{% if post.is_featured %} <i class="fa fa-check text-success"> {% else %} <i class="fa fa-times text-danger"></i> {% endif %}</td>
-            <td>
-              {% if perms.auth.delete_post %}
-              <a href="{% url 'edit_post' post.id %}"><i class="fa fa-edit text-success"></i></a>
-              {% endif %}
-              &nbsp;
-              {% if perms.auth.delete_post %}
-              <a href="{% url 'delete_post' post.id %}"><i class="fa fa-trash text-danger"></i></a>
-              {% endif %}
-              &nbsp;
-            </td>
-        </tr>
-        {% endfor %}
-          
-        </tbody>
-      </table>
+        <!-- Left Sidebar -->
+        <aside class="col-md-3 mb-4">
+            {% include 'dashboard/sidebar.html' %}
+        </aside>
+
+        <!-- Right Side Content -->
+        <main class="col-md-9">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="mb-0">All Posts</h3>
+                <a href="{% url 'add_post' %}" class="btn btn-dark text-light">
+                    Add New
+                </a>
+            </div>
+
+            <!-- Responsive Table -->
+            <div class="table-responsive">
+                <table class="table table-hover" aria-label="Posts Table" itemscope itemtype="https://schema.org/Blog">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Author</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Featured</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post in posts %}
+                        <tr itemscope itemtype="https://schema.org/BlogPosting">
+                            <td>{{ forloop.counter }}</td>
+                            <td itemprop="headline">
+                                <a href="{% url 'post_detail' post.slug %}" class="text-dark">
+                                    {{ post.title }}
+                                </a>
+                            </td>
+                            <td itemprop="keywords">{{ post.category }}</td>
+                            <td itemprop="author">{{ post.auther }}</td>
+                            <td>
+                                <span itemprop="articleSection">{{ post.status }}</span>
+                            </td>
+                            <td>
+                                {% if post.is_featured %}
+                                    <i class="fa fa-check text-success" aria-label="Featured"></i>
+                                {% else %}
+                                    <i class="fa fa-times text-danger" aria-label="Not Featured"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if perms.auth.change_post %}
+                                    <a href="{% url 'edit_post' post.id %}" aria-label="Edit Post">
+                                        <i class="fa fa-edit text-success"></i>
+                                    </a>
+                                {% endif %}
+                                &nbsp;
+                                {% if perms.auth.delete_post %}
+                                    <a href="{% url 'delete_post' post.id %}" aria-label="Delete Post">
+                                        <i class="fa fa-trash text-danger"></i>
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </main>
     </div>
-  </div>
-  
-
+</div>
 {% endblock %}

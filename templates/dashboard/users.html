@@ -1,59 +1,119 @@
-{% extends 'base.html'%}
-
+{% extends 'base.html' %}
 
 {% block content %}
-<div class="row">
-    <!-- Left sidebar -->
-    <!-- load the sidebar here -->
-    {% include 'dashboard/sidebar.html' %}
 
-    <!-- Right side content --> 
-    <div class="col-md-9">
+<main class="container my-4" role="main">
+  <div class="row">
+
+    <!-- Sidebar Navigation -->
+    <aside class="col-md-3" aria-label="Dashboard Navigation">
+      {% include 'dashboard/sidebar.html' %}
+    </aside>
+
+    <!-- Main Content -->
+    <section class="col-md-9" aria-labelledby="page-title">
 
       {% if perms.auth.view_user %}
-      <h3>All Users</h3>
-      <a href="{% url 'add_user' %}" class="btn btn-dark text-light float-right mb-2"> Add New </a>
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Full Name</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Active</th>
-            <th>staff</th> 
-            <th>Superuser</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-          <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ user.first_name }} {{ user.last_name }}</td>
-            <td>{{ user.username }}</td>
-            <td>{{ user.email }}</td>
-            <td>{% if user.is_active %} <i class="fa fa-check text-success"> {% else %} <i class="fa fa-times text-danger"></i> {% endif %}</td>
-            <td>{% if user.is_staff %} <i class="fa fa-check text-success"> {% else %} <i class="fa fa-times text-danger"></i> {% endif %}</td>
-            <td>{% if user.is_superuser %} <i class="fa fa-check text-success"> {% else %} <i class="fa fa-times text-danger"></i> {% endif %}</td>
-            
-            <td>
-              
-              <a href="{% url 'edit_user' user.id%}"><i class="fa fa-edit text-success"></i></a>
-              &nbsp;
-              <a href="{% url 'delete_user' user.id%}"><i class="fa fa-trash text-danger"></i></a>
-              &nbsp;
-            </td>
-        </tr>
-        {% endfor %}
-          
-        </tbody>
-      </table>
+
+      <header class="d-flex justify-content-between align-items-center mb-3">
+        <h1 id="page-title" class="h3 text-dark mb-0">
+          All Users
+        </h1>
+
+        <a
+          href="{% url 'add_user' %}"
+          class="btn btn-dark text-light"
+          aria-label="Add New User"
+        >
+          Add New User
+        </a>
+      </header>
+
+      <div class="table-responsive">
+        <table class="table table-hover" aria-describedby="users-table-description">
+          <caption id="users-table-description" class="visually-hidden">
+            List of registered users with account status and actions
+          </caption>
+
+          <thead class="table-light">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Full Name</th>
+              <th scope="col">Username</th>
+              <th scope="col">Email</th>
+              <th scope="col">Active</th>
+              <th scope="col">Staff</th>
+              <th scope="col">Superuser</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for user in users %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+
+              <td>{{ user.first_name }} {{ user.last_name }}</td>
+              <td>{{ user.username }}</td>
+              <td>{{ user.email }}</td>
+
+              <td>
+                {% if user.is_active %}
+                  <span class="text-success" aria-label="Active user">✔</span>
+                {% else %}
+                  <span class="text-danger" aria-label="Inactive user">✘</span>
+                {% endif %}
+              </td>
+
+              <td>
+                {% if user.is_staff %}
+                  <span class="text-success" aria-label="Staff member">✔</span>
+                {% else %}
+                  <span class="text-danger" aria-label="Not staff">✘</span>
+                {% endif %}
+              </td>
+
+              <td>
+                {% if user.is_superuser %}
+                  <span class="text-success" aria-label="Superuser">✔</span>
+                {% else %}
+                  <span class="text-danger" aria-label="Not superuser">✘</span>
+                {% endif %}
+              </td>
+
+              <td>
+                <a
+                  href="{% url 'edit_user' user.id %}"
+                  class="text-success me-2"
+                  aria-label="Edit user {{ user.username }}"
+                >
+                  <i class="fa fa-edit"></i>
+                </a>
+
+                <a
+                  href="{% url 'delete_user' user.id %}"
+                  class="text-danger"
+                  aria-label="Delete user {{ user.username }}"
+                >
+                  <i class="fa fa-trash"></i>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
       {% else %}
-      <h5 class="text-center text-danger">You do not have permission to view this page</h5>
+
+      <p class="text-center text-danger fw-bold" role="alert">
+        You do not have permission to view this page.
+      </p>
+
       {% endif %}
-    </div>
+
+    </section>
   </div>
-  
+</main>
 
 {% endblock %}

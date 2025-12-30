@@ -1,3 +1,12 @@
-
-
-<p>Category does not exist.</p>
+<main role="main" class="container my-4">
+  <section aria-labelledby="category-error-title">
+    <header>
+      <h1 id="category-error-title" class="h3 text-danger">
+        Category Not Found
+      </h1>
+    </header>
+    <p>
+      The category you are looking for does not exist. Please check the URL or return to the <a href="{% url 'category_list' %}">categories page</a>.
+    </p>
+  </section>
+</main>

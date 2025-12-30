@@ -2,11 +2,39 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<h3 class="text-center"> Login</h3>
-<form action="{% url 'login' %}" method="POST" style=" width: 500px; margin: auto;">
-{% csrf_token %}
-{{form | crispy}} # for crispy
-<button type="submit" class="btn btn-warning">login</button>
-</form>
+
+<main class="container my-5" role="main">
+  <section class="row justify-content-center" aria-labelledby="login-title">
+    
+    <header class="col-12 text-center mb-4">
+      <h1 id="login-title" class="h3">
+        Login
+      </h1>
+      <p class="text-muted">
+        Access your account by entering your credentials below.
+      </p>
+    </header>
+
+    <div class="col-md-6 col-lg-5">
+      <form 
+        action="{% url 'login' %}" 
+        method="POST" 
+        aria-label="Login Form"
+      >
+        {% csrf_token %}
+        {{ form|crispy }}
+
+        <button 
+          type="submit" 
+          class="btn btn-warning w-100 mt-3"
+          aria-label="Login to your account"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+
+  </section>
+</main>
 
 {% endblock %}

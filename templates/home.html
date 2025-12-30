@@ -1,74 +1,92 @@
-
 {% extends 'base.html' %}
 
-  {% block content %}
-  {% for post in featured_posts %}
-  {% if forloop.first %}    
-  <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark" style="background-image: url({{post.featured_image.url}});background-blend-mode: overlay;background-size:cover;">
-    <div class="col-md-8 px-0">
-      <h1 class="display-4 font-italic">{{post.title}}</h1>
-      <p class="lead my-3">{{post.short_description | truncatewords:10 | safe}}</p>
-      <p class="lead mb-0"><a href="{% url 'blogs' post.slug %}" class="text-white font-weight-bold">Continue reading...</a></p>
-    </div>
-  </div>
-  {% endif %}
-  {% endfor %}
-  
-  <!-- featured posts -->
-  <h3 class="text-uppercase text-warning" style="letter-spacing: 2px;">Featured Posts</h3>
-  <div class="row mb-2">
-    {% for post in featured_posts %}
-    {% if not forloop.first %}
-    <div class="col-md-6">
-        <div class="card border-0" >
-        <div class="card-body">
-          <h3> <a href="{% url 'blogs' post.slug %}" class="text-dark">{{post.title}}</a></h3>
-          <small class="mb-1 text-muted">{{post.created_at | timesince}} ago | {{post.auther}}</small>
-          <p class="card-text">{{post.short_description | truncatewords:25|safe }}</p>
-        </div>
+{% block content %}
+
+<!-- Featured Jumbotron -->
+{% for post in featured_posts %}
+  {% if forloop.first %}
+    <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark" 
+        style="background-image: url({{post.featured_image.url}}); 
+                background-blend-mode: overlay; 
+                background-size: cover;">
+      <div class="col-md-8 px-0">
+        <h1 class="display-4 font-italic" itemprop="headline">{{ post.title }}</h1>
+        <p class="lead my-3">{{ post.short_description | truncatewords:10 | safe }}</p>
+        <p class="lead mb-0">
+          <a href="{% url 'blogs' post.slug %}" class="text-white font-weight-bold">Continue reading...</a>
+        </p>
       </div>
     </div>
-    {% endif %}
-    {% endfor %}
-  </div>
-  <!-- Recent Articles -->
+  {% endif %}
+{% endfor %}
 
+<!-- Featured Posts Section -->
+<h3 class="text-uppercase text-warning mb-4" style="letter-spacing: 2px;">Featured Posts</h3>
+<div class="row mb-2">
+  {% for post in featured_posts %}
+    {% if not forloop.first %}
+      <div class="col-md-6 mb-3">
+        <div class="card border-0 h-100">
+          <div class="card-body">
+            <h3><a href="{% url 'blogs' post.slug %}" class="text-dark" itemprop="headline">{{ post.title }}</a></h3>
+            <small class="mb-1 text-muted">
+              <time datetime="{{ post.created_at|date:'Y-m-d' }}">{{ post.created_at|timesince }} ago</time> | <span itemprop="author">{{ post.auther }}</span>
+            </small>
+            <p class="card-text">{{ post.short_description | truncatewords:25|safe }}</p>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+<!-- Recent Articles -->
 <div class="container p-0">
-  <!-- Page Heading -->
   <h3 class="text-uppercase text-warning mb-4" style="letter-spacing: 2px;">Recent Articles</h3>
   
   <div class="row">
-    <!-- Left Column - Recent Articles -->
-    <div class="col-md-8 blog-main">
+
+    <!-- Main Blog Column -->
+    <div class="col-lg-8 col-md-12 blog-main">
       {% for post in posts %}
-      <div class="card border-0 mb-4">
-        <div class="card-body">
-          <h3><a href="{% url 'blogs' post.slug %}" class="text-dark">{{post.title}}</a></h3>
-          <small class="mb-1 text-muted">{{post.created_at | timesince}} ago | {{post.auther}}</small>
-          <p class="card-text">{{post.short_description|truncatewords:25|safe}}</p>
-        </div>
-      </div>
+        <article class="card border-0 mb-4" itemscope itemtype="https://schema.org/BlogPosting">
+          <div class="card-body">
+            <h3><a href="{% url 'blogs' post.slug %}" class="text-dark" itemprop="headline">{{ post.title }}</a></h3>
+            <small class="mb-1 text-muted">
+              <time datetime="{{ post.created_at|date:'Y-m-d' }}">{{ post.created_at|timesince }} ago</time> | <span itemprop="author">{{ post.auther }}</span>
+            </small>
+            <p class="card-text" itemprop="description">{{ post.short_description|truncatewords:25|safe }}</p>
+          </div>
+        </article>
       {% endfor %}
     </div>
 
-    <!-- Right Column - Sidebar -->
-    <aside class="col-md-4 blog-sidebar">
-      <div class="p-3 mb-3 bg-light rounded">
-        <h4 class="font-italic">{{about.about_heading}}</h4>
-        <p class="mb-0">{{about.about_description}}</p>
-      </div>
-      
-      {% if social_links %}
-      <div style="background-color: #cecece;" class="p-3 mb-3 rounded">
-        <h4 class="font-italic">Follow Us</h4>
-        <ol class="list-unstyled">
-          {% for i in social_links %}
-          <li><a href="{{i.link}}" target="_blank">{{i.platform}}</a></li>
-          {% endfor %}
-        </ol>
-      </div>
-      {% endif %}
+    <!-- Sidebar Column -->
+    <aside class="col-lg-4 col-md-12">
+      <div class="position-sticky" style="top:20px;">
+
+        <!-- About Us Section -->
+        <div class="p-3 mb-3 bg-light rounded">
+          <h4 class="font-italic" itemprop="headline">{{ about.about_heading }}</h4>
+          <p class="mb-0" itemprop="description">{{ about.about_description }}</p>
+        </div>
+
+        <!-- Social Media Links -->
+        {% if social_links %}
+          <div class="p-3 mb-3 rounded" style="background-color: #cecece;">
+            <h4 class="font-italic">Follow Us</h4>
+            <ul class="list-unstyled mb-0">
+              {% for i in social_links %}
+                <li><a href="{{ i.link }}" target="_blank">{{ i.platform }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+      </div> <!-- End Sticky Wrapper -->
     </aside>
+
   </div>
 </div>
+
 {% endblock %}
