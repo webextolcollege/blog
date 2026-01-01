@@ -23,7 +23,7 @@ from django.conf import settings
 from blogs import views as BlogView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('masteradmin/', admin.site.urls),
     path('', views.home, name='home'),
     path('category/', include('blogs.urls')),
     # path('blogs/<slug:slug>/', BlogView.blogs, name='blogs'),

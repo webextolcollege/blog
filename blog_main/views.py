@@ -1,6 +1,3 @@
-
-
-
 from django.shortcuts import render, redirect
 from assignments.models import About
 from blogs.models import Category, Blog
